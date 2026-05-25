@@ -1,0 +1,40 @@
+{
+  "name": "search_and_filter",
+  "description": "Search for a query in a category and apply a sort order.",
+  "parameters": [
+    {
+      "name": "query",
+      "type": "str",
+      "default": null,
+      "choices": null,
+      "description": ""
+    },
+    {
+      "name": "category",
+      "type": "str",
+      "default": null,
+      "choices": null,
+      "description": ""
+    },
+    {
+      "name": "sort",
+      "type": "str",
+      "default": "price_asc",
+      "choices": [
+        "price_asc",
+        "price_desc",
+        "rating_desc"
+      ],
+      "description": ""
+    }
+  ],
+  "precondition": "'shop' in obs.url",
+  "body": "type_in_field(obs, label='Search', value=query)\nclick_text(obs, text='Search')\nclick_text(obs, text=category)\nclick_text(obs, text=f'Sort: {sort}')",
+  "postcondition": "True",
+  "depth": 2,
+  "iteration_introduced": 2,
+  "times_used": 0,
+  "induced_from_cluster_size": 0,
+  "is_alias_of": null,
+  "parent_skills": []
+}

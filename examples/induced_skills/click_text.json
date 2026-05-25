@@ -1,0 +1,22 @@
+{
+  "name": "click_text",
+  "description": "Click an element with the given visible text.",
+  "parameters": [
+    {
+      "name": "text",
+      "type": "str",
+      "default": null,
+      "choices": null,
+      "description": ""
+    }
+  ],
+  "precondition": "any(getattr(e, 'text', '') == text for e in (obs.dom or []))",
+  "body": "el = find(obs.dom, text=text)\nprimitive_click(el)",
+  "postcondition": "True",
+  "depth": 1,
+  "iteration_introduced": 1,
+  "times_used": 0,
+  "induced_from_cluster_size": 0,
+  "is_alias_of": null,
+  "parent_skills": []
+}

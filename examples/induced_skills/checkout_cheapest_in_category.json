@@ -1,0 +1,36 @@
+{
+  "name": "checkout_cheapest_in_category",
+  "description": "Buy the cheapest item in a category, then complete payment.",
+  "parameters": [
+    {
+      "name": "query",
+      "type": "str",
+      "default": null,
+      "choices": null,
+      "description": ""
+    },
+    {
+      "name": "category",
+      "type": "str",
+      "default": null,
+      "choices": null,
+      "description": ""
+    },
+    {
+      "name": "payment_token",
+      "type": "str",
+      "default": null,
+      "choices": null,
+      "description": ""
+    }
+  ],
+  "precondition": "True",
+  "body": "search_and_filter(obs, query=query, category=category, sort='price_asc')\nclick_text(obs, text='first_result')\nclick_text(obs, text='Add to Cart')\nclick_text(obs, text='Checkout')\ntype_in_field(obs, label='PaymentToken', value=payment_token)\nclick_text(obs, text='Place Order')",
+  "postcondition": "True",
+  "depth": 3,
+  "iteration_introduced": 3,
+  "times_used": 0,
+  "induced_from_cluster_size": 0,
+  "is_alias_of": null,
+  "parent_skills": []
+}

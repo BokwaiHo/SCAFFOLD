@@ -1,0 +1,29 @@
+{
+  "name": "type_in_field",
+  "description": "Type a value into the input field labeled `label`.",
+  "parameters": [
+    {
+      "name": "label",
+      "type": "str",
+      "default": null,
+      "choices": null,
+      "description": ""
+    },
+    {
+      "name": "value",
+      "type": "str",
+      "default": null,
+      "choices": null,
+      "description": ""
+    }
+  ],
+  "precondition": "True",
+  "body": "f = find_input(obs.dom, label=label)\nprimitive_click(f)\nprimitive_type(f, value)",
+  "postcondition": "True",
+  "depth": 1,
+  "iteration_introduced": 1,
+  "times_used": 0,
+  "induced_from_cluster_size": 0,
+  "is_alias_of": null,
+  "parent_skills": []
+}

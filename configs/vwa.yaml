@@ -1,0 +1,48 @@
+# VisualWebArena configuration (Koh et al., 2024). Reproduces SCAFFOLD's row on
+# VWA in Table 1 (target SR: 36.3 ± 0.9). Requires the upstream VWA docker stack
+# and `VWA_TASKS` env var.
+
+iterations: 5
+compaction_interval: 2
+output_dir: ./runs/vwa
+seed: 0
+
+embedder_name: st:all-MiniLM-L6-v2
+cluster_similarity_threshold: 0.55
+
+induction:
+  n_min: 2
+  temperature: 0.3
+  max_tokens: 1500
+  enable_holdout_validation: true
+  max_body_lines: 30
+
+mdl:
+  rho: 0.9
+  l_min: 3
+  r_min: 3
+  max_iterations: 8
+  require_validation_no_drop: true
+  validation_sample_size: 32
+
+distillation:
+  base_model_name: Qwen/Qwen2.5-VL-7B-Instruct
+  lora_rank: 64
+  lora_alpha: 128
+  learning_rate: 1.0e-5
+  epochs: 1
+  output_dir: ./runs/vwa/distill
+  bf16: true
+
+rollout:
+  max_steps: 30
+  temperature: 0.7
+  n_attempts_per_task: 1
+
+use_llm_precondition: true
+use_stub_distiller: false
+
+env:
+  name: vwa
+  sites: [classifieds, reddit, shopping]
+  headless: true

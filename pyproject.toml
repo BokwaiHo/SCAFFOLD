@@ -1,0 +1,68 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "scaffold"
+version = "0.1.0"
+description = "Self-Improving Web Agents via Recursive Parametric Skill Abstraction"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "Apache-2.0"}
+authors = [{name = "Anonymous"}]
+keywords = ["web-agents", "self-improvement", "skill-library", "lifelong-learning"]
+
+dependencies = [
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "torch>=2.1",
+    "transformers>=4.40",
+    "peft>=0.10",                  # LoRA distillation
+    "accelerate>=0.30",
+    "sentence-transformers>=2.6",  # instruction-embedding clustering
+    "scikit-learn>=1.3",           # agglomerative clustering, eval metrics
+    "openai>=1.30",                # GPT-4o inducer
+    "anthropic>=0.30",             # optional alt inducer
+    "pyyaml>=6.0",
+    "tqdm>=4.66",
+    "pydantic>=2.5",
+    "Pillow>=10.0",                # screenshot handling
+    "beautifulsoup4>=4.12",        # DOM parsing
+    "lxml>=5.0",
+    "tenacity>=8.2",               # robust LLM-call retries
+    "tiktoken>=0.6",               # MDL token-length proxy
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4",
+    "pytest-cov>=4.1",
+    "ruff>=0.4",
+    "black>=24.0",
+    "mypy>=1.8",
+]
+viz = [
+    "matplotlib>=3.8",
+    "seaborn>=0.13",
+]
+
+[project.scripts]
+scaffold-train = "scaffold.cli:train"
+scaffold-eval = "scaffold.cli:evaluate"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["scaffold*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.black]
+line-length = 100
+target-version = ["py310"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+addopts = "-ra --strict-markers"

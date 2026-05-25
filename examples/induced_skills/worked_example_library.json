@@ -1,0 +1,131 @@
+{
+  "skills": [
+    {
+      "name": "click_text",
+      "description": "Click an element with the given visible text.",
+      "parameters": [
+        {
+          "name": "text",
+          "type": "str",
+          "default": null,
+          "choices": null,
+          "description": ""
+        }
+      ],
+      "precondition": "any(getattr(e, 'text', '') == text for e in (obs.dom or []))",
+      "body": "el = find(obs.dom, text=text)\nprimitive_click(el)",
+      "postcondition": "True",
+      "depth": 1,
+      "iteration_introduced": 1,
+      "times_used": 0,
+      "induced_from_cluster_size": 0,
+      "is_alias_of": null,
+      "parent_skills": []
+    },
+    {
+      "name": "type_in_field",
+      "description": "Type a value into the input field labeled `label`.",
+      "parameters": [
+        {
+          "name": "label",
+          "type": "str",
+          "default": null,
+          "choices": null,
+          "description": ""
+        },
+        {
+          "name": "value",
+          "type": "str",
+          "default": null,
+          "choices": null,
+          "description": ""
+        }
+      ],
+      "precondition": "True",
+      "body": "f = find_input(obs.dom, label=label)\nprimitive_click(f)\nprimitive_type(f, value)",
+      "postcondition": "True",
+      "depth": 1,
+      "iteration_introduced": 1,
+      "times_used": 0,
+      "induced_from_cluster_size": 0,
+      "is_alias_of": null,
+      "parent_skills": []
+    },
+    {
+      "name": "search_and_filter",
+      "description": "Search for a query in a category and apply a sort order.",
+      "parameters": [
+        {
+          "name": "query",
+          "type": "str",
+          "default": null,
+          "choices": null,
+          "description": ""
+        },
+        {
+          "name": "category",
+          "type": "str",
+          "default": null,
+          "choices": null,
+          "description": ""
+        },
+        {
+          "name": "sort",
+          "type": "str",
+          "default": "price_asc",
+          "choices": [
+            "price_asc",
+            "price_desc",
+            "rating_desc"
+          ],
+          "description": ""
+        }
+      ],
+      "precondition": "'shop' in obs.url",
+      "body": "type_in_field(obs, label='Search', value=query)\nclick_text(obs, text='Search')\nclick_text(obs, text=category)\nclick_text(obs, text=f'Sort: {sort}')",
+      "postcondition": "True",
+      "depth": 2,
+      "iteration_introduced": 2,
+      "times_used": 0,
+      "induced_from_cluster_size": 0,
+      "is_alias_of": null,
+      "parent_skills": []
+    },
+    {
+      "name": "checkout_cheapest_in_category",
+      "description": "Buy the cheapest item in a category, then complete payment.",
+      "parameters": [
+        {
+          "name": "query",
+          "type": "str",
+          "default": null,
+          "choices": null,
+          "description": ""
+        },
+        {
+          "name": "category",
+          "type": "str",
+          "default": null,
+          "choices": null,
+          "description": ""
+        },
+        {
+          "name": "payment_token",
+          "type": "str",
+          "default": null,
+          "choices": null,
+          "description": ""
+        }
+      ],
+      "precondition": "True",
+      "body": "search_and_filter(obs, query=query, category=category, sort='price_asc')\nclick_text(obs, text='first_result')\nclick_text(obs, text='Add to Cart')\nclick_text(obs, text='Checkout')\ntype_in_field(obs, label='PaymentToken', value=payment_token)\nclick_text(obs, text='Place Order')",
+      "postcondition": "True",
+      "depth": 3,
+      "iteration_introduced": 3,
+      "times_used": 0,
+      "induced_from_cluster_size": 0,
+      "is_alias_of": null,
+      "parent_skills": []
+    }
+  ]
+}

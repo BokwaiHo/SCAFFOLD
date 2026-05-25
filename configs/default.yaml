@@ -1,0 +1,63 @@
+# Default SCAFFOLD configuration.
+# Hyperparameters match §4.1.4 of the paper. Override any field with --override
+# or by passing a more specific config file.
+
+# Top-level loop
+iterations: 5             # K
+compaction_interval: 2    # M
+output_dir: ./runs/scaffold
+seed: 0
+
+# Embedder for clustering and library retrieval
+embedder_name: hash       # "hash" (offline) | "st:all-MiniLM-L6-v2" | "st:<any>"
+cluster_similarity_threshold: 0.55
+
+# Stage 2: multi-instance induction (§3.3)
+induction:
+  n_min: 2                       # multi-instance threshold
+  temperature: 0.3               # GPT-4o inducer sampling temperature
+  max_tokens: 1500
+  enable_holdout_validation: true
+  holdout_attempts: 1
+  max_body_lines: 30
+  forbid_imports: true
+  forbid_def: true
+
+# Stage 4: MDL compaction (§3.5)
+mdl:
+  rho: 0.9                       # behavioral-equivalence threshold for Merge
+  l_min: 3                       # min subseq length for Refactor
+  r_min: 3                       # min #skills sharing subseq for Refactor
+  max_iterations: 8
+  require_validation_no_drop: true
+  validation_sample_size: 32
+
+# Stage 5: LoRA distillation (§3.6)
+distillation:
+  base_model_name: Qwen/Qwen2.5-VL-7B-Instruct
+  lora_rank: 64
+  lora_alpha: 128
+  lora_dropout: 0.0
+  learning_rate: 1.0e-5
+  epochs: 1
+  batch_size: 1
+  gradient_accumulation_steps: 8
+  max_seq_len: 4096
+  aux_loss_weight: 0.2
+  output_dir: ./runs/scaffold/distill
+  save_adapter_only: true
+  bf16: true
+
+# Rollout (Stage 1) hyperparameters
+rollout:
+  max_steps: 30                  # 30-step horizon per §4.1.4
+  temperature: 0.7               # trajectory-collection temperature
+  n_attempts_per_task: 1
+  seed: 0
+
+# Pre/Postcondition check (App. A): "yes" uses LLMJudgeValidator (slower, more
+# accurate); "no" uses PythonExprValidator (offline, fast)
+use_llm_precondition: false
+
+# In tests / toy env, set use_stub_distiller=true to skip LoRA training entirely
+use_stub_distiller: false

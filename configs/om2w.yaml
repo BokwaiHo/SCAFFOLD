@@ -1,0 +1,55 @@
+# Online-Mind2Web configuration (Xue et al., 2025). Reproduces SCAFFOLD's row on
+# the OM2W-X held-out test split in Table 1 (target SR: 43.5 ± 1.2).
+# Requires `OM2W_TASKS` env var pointing at the task JSON.
+
+iterations: 5
+compaction_interval: 2
+output_dir: ./runs/om2w
+seed: 0
+
+embedder_name: st:all-MiniLM-L6-v2
+cluster_similarity_threshold: 0.55
+
+induction:
+  n_min: 2
+  temperature: 0.3
+  max_tokens: 1500
+  enable_holdout_validation: true
+  max_body_lines: 30
+
+mdl:
+  rho: 0.9
+  l_min: 3
+  r_min: 3
+  max_iterations: 8
+  require_validation_no_drop: true
+  validation_sample_size: 32
+
+distillation:
+  base_model_name: Qwen/Qwen2.5-VL-7B-Instruct
+  lora_rank: 64
+  lora_alpha: 128
+  learning_rate: 1.0e-5
+  epochs: 1
+  output_dir: ./runs/om2w/distill
+  bf16: true
+
+rollout:
+  max_steps: 30
+  temperature: 0.7
+  n_attempts_per_task: 1
+
+use_llm_precondition: true
+use_stub_distiller: false
+
+env:
+  name: om2w
+  # Held-out domains for the 9/3 split (§4.1.1)
+  held_out_domains:
+    - jobs_and_careers
+    - travel_and_transportation
+    - government_and_services
+  # Set `train_sites` to restrict training to one site for the cross-site
+  # transfer experiments of §4.6.
+  train_sites: null
+  headless: true

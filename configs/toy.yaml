@@ -1,0 +1,40 @@
+# Toy-env config: runs end-to-end in seconds, no GPU / API keys required.
+# Used by `pytest tests/` and the README quick-start.
+
+iterations: 3
+compaction_interval: 2
+output_dir: ./runs/toy
+seed: 42
+
+embedder_name: hash
+cluster_similarity_threshold: 0.5
+
+induction:
+  n_min: 2
+  temperature: 0.3
+  max_tokens: 1024
+  enable_holdout_validation: false   # toy holdouts have no real verifier
+  max_body_lines: 30
+
+mdl:
+  rho: 0.9
+  l_min: 2          # lower threshold so the toy env has refactor candidates
+  r_min: 2
+  max_iterations: 4
+  require_validation_no_drop: false  # skip val-SR check in tests
+  validation_sample_size: 4
+
+distillation:
+  base_model_name: Qwen/Qwen2.5-VL-7B-Instruct
+  lora_rank: 8                     # tiny for tests
+  lora_alpha: 16
+  epochs: 1
+  output_dir: ./runs/toy/distill
+
+rollout:
+  max_steps: 12
+  temperature: 0.7
+  n_attempts_per_task: 1
+
+use_llm_precondition: false
+use_stub_distiller: true             # essential: tests don't need real LoRA
