@@ -1,4 +1,7 @@
-# SCAFFOLD: Self-Improving Web Agents via Recursive Parametric Skill Abstraction
+<h1>
+  <img src="figures/logo.png" width="40" style="vertical-align: middle;">
+  SCAFFOLD: Self-Improving Web Agents via Recursive Parametric Skill Abstraction
+</h1>
 
 Implementation of **SCAFFOLD**, a self-improving framework for visual web agents that (i) induces parametric, executable skills from successful trajectories under a multi-instance abstraction constraint, (ii) maintains a recursively composed hierarchy in which higher-level skills invoke lower-level ones, (iii) compacts the library via a minimum-description-length (MDL) criterion and behavioral-equivalence checking, and (iv) periodically distills skill-augmented trajectories back into model weights.
 
